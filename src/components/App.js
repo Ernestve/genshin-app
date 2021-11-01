@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
 import { Container, Grid, Box } from "@mui/material";
+import {
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+  Typography,
+} from "@mui/material";
 import "../css/card.css";
 
 const URL = "https://api.genshin.dev/characters/";
@@ -16,7 +23,7 @@ function App() {
       });
   }, []);
 
-  const URLCharacter = URL + characters[3];
+  const URLCharacter = URL + character[0];
   useEffect(() => {
     fetch(URLCharacter)
       .then((response) => response.json())
@@ -39,15 +46,31 @@ function App() {
               <Box>
                 <Grid container spacing={3}>
                   {characters.map((character) => (
-                    <Grid item xs={6} sm={3} md={2}>
-                      <div className="character-card" key={character}>
-                        <h3 className="character-card__name">{character}</h3>
-                        <img
-                          className="character-card__image"
-                          src={URL + character + "/card"}
-                          alt={character}
-                        />
-                      </div>
+                    <Grid item xs={12} sm={6} md={3}>
+                      <Card sx={{ maxWidth: 345 }}>
+                        <CardActionArea>
+                          <CardMedia
+                            component="img"
+                            height="140"
+                            image={URL + character + "/card"}
+                            alt={character}
+                          />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="div"
+                            >
+                              {character}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Lizards are a widespread group of squamate
+                              reptiles, with over 6,000 species, ranging across
+                              all continents except Antarctica
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
                     </Grid>
                   ))}
                 </Grid>
