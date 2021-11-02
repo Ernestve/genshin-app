@@ -51,7 +51,7 @@ function App() {
                         <CardActionArea>
                           <CardMedia
                             component="img"
-                            height="140"
+                            height="320"
                             image={URL + character + "/card"}
                             alt={character}
                           />
@@ -60,6 +60,7 @@ function App() {
                               gutterBottom
                               variant="h5"
                               component="div"
+                              sx={{ textTransform: "capitalize" }}
                             >
                               {character}
                             </Typography>
