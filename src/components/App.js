@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Grid, Box } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import {
   Card,
   CardActionArea,
@@ -11,9 +11,41 @@ import "../css/card.css";
 
 const URL = "https://api.genshin.dev/characters/";
 
+function InfoCharacter(props) {
+  const [character, setCharacter] = useState([]);
+  const URLCharacter = URL + props.character;
+  useEffect(() => {
+    fetch(URLCharacter)
+      .then((response) => response.json())
+      .then((data) => {
+        setCharacter(data);
+      });
+  }, [URLCharacter]);
+  return (
+    <>
+      <CardMedia
+        component="img"
+        height="360"
+        image={URLCharacter + "/card"}
+        alt={character.name}
+      />
+      <CardContent sx={{ height: 200 }}>
+        <Typography gutterBottom variant="h5" component="div">
+          {character.name}
+        </Typography>
+        <Typography gutterBottom variant="p" component="div">
+          {character.vision}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {character.description}
+        </Typography>
+      </CardContent>
+    </>
+  );
+}
+
 function App() {
   const [characters, setCharacters] = useState([]);
-  const [character, setCharacter] = useState({});
 
   useEffect(() => {
     fetch(URL)
@@ -23,61 +55,21 @@ function App() {
       });
   }, []);
 
-  const URLCharacter = URL + character[0];
-  useEffect(() => {
-    fetch(URLCharacter)
-      .then((response) => response.json())
-      .then((data) => {
-        setCharacter(data);
-      });
-  }, []);
-
-  const img = URLCharacter + "/card";
-  console.log(img);
-
   return (
     <div className="App">
       <h1>Genshin Impact</h1>
       <h2>Characters</h2>
       <Container>
-        <Grid container spacing={0}>
-          <div className="characters">
-            <Grid item xs={12}>
-              <Box>
-                <Grid container spacing={3}>
-                  {characters.map((character) => (
-                    <Grid item xs={12} sm={6} md={3}>
-                      <Card sx={{ maxWidth: 345 }}>
-                        <CardActionArea>
-                          <CardMedia
-                            component="img"
-                            height="320"
-                            image={URL + character + "/card"}
-                            alt={character}
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                              sx={{ textTransform: "capitalize" }}
-                            >
-                              {character}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Lizards are a widespread group of squamate
-                              reptiles, with over 6,000 species, ranging across
-                              all continents except Antarctica
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
+        <Grid container spacing={2}>
+          {characters.map((character) => (
+            <Grid item xs={12} sm={6} md={3}>
+              <Card sx={{ maxWidth: 320 }}>
+                <CardActionArea>
+                  <InfoCharacter character={character} />
+                </CardActionArea>
+              </Card>
             </Grid>
-          </div>
+          ))}
         </Grid>
       </Container>
     </div>
